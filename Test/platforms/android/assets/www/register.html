@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册</title>
+</head>
+
+<body>
+    <h1 style="text-align: center;">注册页</h1>
+    <div style="text-align: center;">
+        <p id="dis"> <input type="text" id="un" placeholder="请输入用户名"></p>
+        <p id="dis"><input type="password" id="up" placeholder="请输入密码"></p>
+        <p id="dis"><input type="tel" id="um" placeholder="请输入电话号码"></p>
+        <p>
+            <button id="register">提交注册</button>
+        </p>
+        <p> <button id="cameraTakePicture">拍照</button>
+            <img id="myImage" style="width: 80px;height: 80px;"></img>
+        </p>
+        <p><button id="cameraGetPicture">从图库选择</button></p>
+    </div>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+
+    <script type="text/javascript">
+        window.onload = function () {
+
+            document.getElementById("register").addEventListener("click", register);
+            document.getElementById("cameraTakePicture").addEventListener("click", cameraTakePicture);
+            document.getElementById("cameraGetPicture").addEventListener("click", cameraGetPicture);
+
+        }
+        //保存数据并注册
+        function register() {
+            var un = document.getElementById("un").value;
+            var up = document.getElementById("up").value;
+            var um = document.getElementById("um").value;
+            window.localStorage.setItem("username", un);
+            window.localStorage.setItem("userpassword", up);
+            window.localStorage.setItem("userphone", um);
+            createContact(un, um);
+        }
+        function getD() {
+            document.getElementById("dis").innerHTML = "<p>" +
+                window.localStorage.getItem("username") + "" +
+                window.localStorage.getItem("userpassword") +
+                window.localStorage.getItem("userphone") + "</p>";
+            document.getElementById("myImage").src = window.localStorage.getItem("userpic");
+        }
+        //从摄像头获取照片
+        function cameraTakePicture() {
+            navigator.camera.getPicture(onSuccess, onFail, {
+                quality: 60,
+                destinationType: Camera.DestinationType.DATA_URL
+            });
+
+            function onSuccess(imageData) {
+                var image = document.getElementById('myImage');
+                image.src = "data:image/jpeg;base64," + imageData;
+                window.localStorage.setItem("userpic", image.src);
+            }
+
+            function onFail(message) {
+                alert('Failed because: ' + message);
+            }
+        }
+        //从图库获取照片
+        function cameraGetPicture() {
+            navigator.camera.getPicture(onSuccess, onFail, {
+                quality: 60,
+                destinationType: Camera.DestinationType.DATA_URL,
+                sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+            });
+
+            function onSuccess(imageData) {
+                var image = document.getElementById('myImage');
+                image.src = "data:image/jpeg;base64," + imageData;
+                window.localStorage.setItem("userpic", image.src);
+            }
+
+            function onFail(message) {
+                alert('Failed because: ' + message);
+            }
+
+        }
+        //新建并保存联系人
+        function createContact(un, um) {
+            var myContact = navigator.contacts.create();
+            myContact.displayName = un;
+            myContact.phoneNumbers = [new ContactField('mobile', um, false)];
+            myContact.save(contactSuccess, contactError);
+
+            function contactSuccess() {
+                alter('Contact is saved!')
+            }
+
+            function contactError(message) {
+                alter('Failed because:' + message);
+            }
+        }
+    </script>
+</body>
+
+</html>
