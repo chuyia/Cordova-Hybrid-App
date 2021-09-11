@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+</head>
+
+<body>
+    <h1 style="text-align: center;">登录页</h1>
+    <div id="login_form" style="text-align: center;">
+        <p> <input type="text" id="un" placeholder="请输入用户名"></p>
+        <p><input type="password" id="up" placeholder="请输入密码"></p>
+        <button id="login" onclick="login()">登录</button>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script>
+        window.onload = function () {
+            document.getElementById("login").addEventListener("click", login);
+        }
+        function login() {
+            var username1 = document.getElementById("un").value;
+            var userpassword1 = document.getElementById("up").value;
+            var username2 = window.localStorage.getItem("username", un);
+            var userpassword2 = window.localStorage.getItem("userpassword", up);
+            if (username1 == username2 && userpassword1 == userpassword2) {
+                window.location.href = "main.html";
+            }
+            else {
+                alert('用户名或密码错误');
+            }
+
+
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主界面</title>
+</head>
+
+<body onload="load()">
+    <h1 style="text-align: center;">主界面</h1>
+    <div style="text-align: center;">
+        <div id="dis"></div>
+        <p>头像：<img id="myImage" style="width: 80px;height: 80px;"></p>
+    </div>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script>
+        function load() {
+            document.getElementById("dis").innerHTML = "<p>" +
+                "联系人姓名：" + window.localStorage.getItem("username") + "<p>" + "密码：" +
+                window.localStorage.getItem("userpassword") + "<p>" + "联系号码：" +
+                window.localStorage.getItem("userphone");
+
+            document.getElementById("myImage").src = window.localStorage.getItem("userpic");
+
+        }
+    </script>
+</body>
+
+</html>
